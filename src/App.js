@@ -62,7 +62,10 @@ function App() {
 	if (nomination.length === 5) {
 		btnClass = true;
 		btn = (
-			<div className="overflow-hidden leading-normal" role="alert">
+			<div
+				className="overflow-hidden leading-normal w-screen fixed "
+				role="alert"
+			>
 				<p className="px-4 py-3 font-bold text-purple-100 bg-purple-800">
 					Confirm your Nominations
 				</p>
@@ -89,14 +92,9 @@ function App() {
 
 	return (
 		<div className="font-mono">
-			<Banner />
-			<Banner />
-			<Banner />
-			<Banner />
-			<Banner />
 			{btn}
-			<div className="border-2 flex justify-center items-center p-6">
-				<h1 className="text-5xl font-bold px-6">Movie Nominator</h1>
+			<div className="flex justify-center items-center p-6 bg-indigo-800">
+				<h1 className="text-5xl font-bold px-6 text-white">Movie Nominator</h1>
 
 				{/* <img className="w-40 h-45 px-3 py-3" src={singlePoster} alt="logo" /> */}
 			</div>
@@ -104,14 +102,21 @@ function App() {
 				<SearchBar searchInput={searchInput} setSearchInput={setSearchInput} />
 			</div>
 
-			<div className="border-2 flex justify-center">
+			<div className="my-15">
+				{nomination.length > 0 ? (
+					<p className="text-3xl mx-8">Nominations</p>
+				) : (
+					""
+				)}
+
 				<Nominees
 					nominations={nomination}
 					removeNominee={removeNominationHandler}
 				/>
 			</div>
 			<div>
-				<div className="grid grid-cols-5 mx-20">
+				<div className="">
+					<p className="text-3xl mx-8">Movies</p>
 					<MovieList
 						movies={movies}
 						addNominee={addNomineeHandler}
