@@ -10,18 +10,15 @@ const MovieList = ({ movies, addNominee, btn }) => {
 			image = movie.Poster;
 		}
 		return (
-			<div class="inline-block px-2 w-64 h-64">
-				<div
-					class="bg-white rounded-lg overflow-hidden shadow-xl my-8 py-4"
-					key={movie.imdbID}
-				>
-					<img src={image} alt="Movie Poster" class="w-full h-64" />
-					<div class="p-4">
-						<p class="font-medium text-lg">
-							<span class="font-normal  leadin-relaxed">{movie.Title}</span>
+			<div className="inline-block px-2 w-64 h-64" key={movie.imdbID}>
+				<li className="bg-white rounded-lg overflow-hidden shadow-xl my-8 py-4">
+					<img src={image} alt="Movie Poster" className="w-full h-64" />
+					<div className="p-4">
+						<p className="font-medium text-lg">
+							<span className="font-normal  leadin-relaxed">{movie.Title}</span>
 						</p>
-						<p class="font-medium text-lg">
-							<span class="font-normal ">{movie.Year}</span>
+						<p className="font-medium text-lg">
+							<span className="font-normal ">{movie.Year}</span>
 						</p>
 					</div>
 					<div className="flex justify-center">
@@ -33,7 +30,7 @@ const MovieList = ({ movies, addNominee, btn }) => {
 							Add Nominee
 						</button>
 					</div>
-				</div>
+				</li>
 			</div>
 		);
 	});

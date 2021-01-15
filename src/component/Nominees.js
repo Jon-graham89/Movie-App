@@ -1,5 +1,4 @@
 import React from "react";
-import MovieList from "./MovieList";
 
 const Nominees = ({ nominations, removeNominee }) => {
 	let image = "";
@@ -12,18 +11,17 @@ const Nominees = ({ nominations, removeNominee }) => {
 		}
 
 		return (
-			<div class="inline-block px-2 w-64 h-64">
-				<div
-					class="bg-white rounded-lg overflow-hidden shadow-xl my-8 py-4"
-					key={"nom" + nominee.imdbID}
-				>
-					<img src={image} alt="Movie Poster" class="w-full h-64" />
-					<div class="p-4">
-						<p class="font-medium text-lg">
-							<span class="font-normal leadin-relaxed">{nominee.Title}</span>
+			<div className="inline-block px-2 w-64 h-64" key={"nom" + nominee.imdbID}>
+				<div className="bg-white rounded-lg overflow-hidden shadow-xl my-8 py-4">
+					<img src={image} alt="Movie Poster" className="w-full h-64" />
+					<div className="p-4">
+						<p className="font-medium text-lg">
+							<span className="font-normal leadin-relaxed">
+								{nominee.Title}
+							</span>
 						</p>
-						<p class="font-medium text-lg">
-							<span class="font-normal">{nominee.Year}</span>
+						<p className="font-medium text-lg">
+							<span className="font-normal">{nominee.Year}</span>
 						</p>
 					</div>
 					<div className="flex justify-center">

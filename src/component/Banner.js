@@ -1,25 +1,26 @@
 import React from "react";
 
-const Banner = () => (
-	<div class="inline-block px-2 w-64 h-64">
-		<div
-			class="bg-white rounded-lg overflow-hidden shadow-xl my-8 py-4"
-			key={Math.random()}
-		>
-			<img
-				src="https://m.media-amazon.com/images/M/MV5BMWI0NWY0ODUtNGY3Yy00ZDU1LTllYjUtMDFkYWEzZGQwY2I1XkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_SX300.jpg"
-				alt="movieimage"
-				class="w-full h-64"
-			/>
-			<div class="p-4">
-				<p class="font-medium text-lg">
-					Title:{" "}
-					<span class="font-normal text-base leadin-relaxed">movie title</span>
-				</p>
-				<p class="font-medium text-lg">
-					Year of Release: <span class="font-normal text-base">movie year</span>
-				</p>
-			</div>
+const Banner = (props) => (
+	<div className="overflow-hidden leading-normal w-screen fixed " role="alert">
+		<p className="px-4 py-3 font-bold text-purple-100 bg-purple-800 text-2xl">
+			Confirm your Nominations
+		</p>
+		<div className="px-4 py-3 text-purple-700 bg-purple-100 ">
+			{/* <ul>
+				{props.nomination.map((n) => {
+					return <li key={Math.random()}>{n.Title}</li>;
+				})}
+			</ul> */}
+
+			<button className="h-8 px-4 m-2 text-sm text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800">
+				Confirm Nomination
+			</button>
+			<button
+				onClick={props.clearNomination}
+				className="h-8 px-4 m-2 text-sm text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800"
+			>
+				Clear Nomination
+			</button>
 		</div>
 	</div>
 );
