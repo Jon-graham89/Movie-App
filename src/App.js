@@ -63,7 +63,6 @@ function App() {
 
 	let banner = "";
 	let btnClass = false;
-	// double if statement for nominations
 
 	if (nomination.length === 5) {
 		btnClass = true;
@@ -87,8 +86,6 @@ function App() {
 			<div className="container mx-10">
 				<SearchBar searchInput={searchInput} setSearchInput={setSearchInput} />
 			</div>
-
-			{/* nomination == true, output nominations */}
 
 			<div className="my-15">
 				{nomination.length > 0 ? (
