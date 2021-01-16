@@ -48,5 +48,3 @@ const MovieList = ({ movies, addNominee, btn }) => {
 };
 
 export default MovieList;
-
-// "h-10 px-1 my-2 text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800"
