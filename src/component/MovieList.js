@@ -1,8 +1,17 @@
 import React from "react";
 
 const MovieList = ({ movies, addNominee, btn }) => {
+	let disable =
+		"h-10 px-1 my-2 text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800";
 	let image = "";
 	const movieList = movies.map((movie, index) => {
+		if (movie.clicked) {
+			disable =
+				" disable h-10 px-1 my-2 text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800";
+		} else {
+			disable =
+				"h-10 px-1 my-2 text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800";
+		}
 		if (movie.Poster === "N/A") {
 			image =
 				"https://image.shutterstock.com/image-vector/not-available-grunge-rubber-stamp-260nw-549465907.jpg";
@@ -25,7 +34,7 @@ const MovieList = ({ movies, addNominee, btn }) => {
 						<button
 							onClick={(event) => addNominee(event, index)}
 							disabled={btn}
-							className="h-10 px-1 my-2 text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800"
+							className={disable}
 						>
 							Add Nominee
 						</button>
@@ -39,3 +48,5 @@ const MovieList = ({ movies, addNominee, btn }) => {
 };
 
 export default MovieList;
+
+// "h-10 px-1 my-2 text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800"

@@ -42,12 +42,14 @@ function App() {
 			setNomination([...nomination]);
 		} else {
 			setNomination([...nomination, nominee[index]]);
+			setMovies([...movies, (movies[index].clicked = true)]);
 			// localStorage.setItem("nominations", JSON.stringify(nomination));
 		}
 	};
 
 	const removeNominationHandler = (event, index) => {
 		const nominee = Object.assign([], nomination);
+		nominee[index].clicked = false;
 		nominee.splice(index, 1);
 		setNomination(nominee);
 	};
