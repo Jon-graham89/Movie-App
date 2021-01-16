@@ -5,7 +5,7 @@ const MovieList = ({ movies, addNominee, btn }) => {
 		"h-10 px-1 my-2 text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800";
 	let image = "";
 	const movieList = movies.map((movie, index) => {
-		if (movie.clicked) {
+		if (movie.clicked || btn === true) {
 			disable =
 				" disable h-10 px-1 my-2 text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800";
 		} else {
@@ -33,7 +33,7 @@ const MovieList = ({ movies, addNominee, btn }) => {
 					<div className="flex justify-center">
 						<button
 							onClick={(event) => addNominee(event, index)}
-							disabled={btn}
+							// disabled={btn}
 							className={disable}
 						>
 							Add Nominee
