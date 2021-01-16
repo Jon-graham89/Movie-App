@@ -19,7 +19,7 @@ function App() {
 	const [nomination, setNomination] = useState(getnoms);
 
 	const getMovieData = async (searchInput) => {
-		const url = `http://www.omdbapi.com/?apikey=86a0e89f&s=${searchInput}`;
+		const url = `https://www.omdbapi.com/?apikey=86a0e89f&s=${searchInput}`;
 
 		const response = await fetch(url);
 		const responseJson = await response.json();
