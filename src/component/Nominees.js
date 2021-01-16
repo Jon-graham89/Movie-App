@@ -12,7 +12,7 @@ const Nominees = ({ nominations, removeNominee }) => {
 
 		return (
 			<div className="inline-block px-2 w-64 h-64" key={"nom" + nominee.imdbID}>
-				<div className="bg-white rounded-lg overflow-hidden shadow-xl my-8 py-4">
+				<div className="card-color rounded-lg overflow-hidden shadow-xl my-8 py-4">
 					<img src={image} alt="Movie Poster" className="w-full h-64" />
 					<div className="p-4">
 						<p className="font-medium text-lg">

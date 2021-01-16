@@ -78,19 +78,19 @@ function App() {
 	}
 
 	return (
-		<div className="font-mono">
+		<div>
 			{banner}
-			<div className="flex justify-center items-center p-6 bg-indigo-800">
+			<div className="flex justify-center items-center p-6 bg-indigo-700">
 				<h1 className="text-5xl font-bold px-6 text-white">Movie Nominator</h1>
 			</div>
 			<div className="container mx-10">
 				<SearchBar searchInput={searchInput} setSearchInput={setSearchInput} />
 			</div>
 
-			<div className="my-15">
+			<div className="my-12 mx-36">
 				{nomination.length > 0 ? (
 					<div>
-						<p className="text-3xl mx-8">Nominations</p>
+						<p className="text-3xl mx-8 text-white">Nominations</p>
 						<div className="flex justify-center">
 							<button
 								className="h-10 px-2 my-2 mx-5 text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800"
@@ -117,8 +117,13 @@ function App() {
 			</div>
 
 			<div>
-				<div className="">
-					<p className="text-3xl mx-8">Movies</p>
+				<div className="mx-12 mx-36">
+					{movies.length > 0 ? (
+						<p className="text-3xl mx-8 text-white my-12">Movies</p>
+					) : (
+						""
+					)}
+
 					<MovieList
 						movies={movies}
 						addNominee={addNomineeHandler}
