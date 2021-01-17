@@ -1,9 +1,15 @@
 import React from "react";
 
-const MovieList = ({ movies, addNominee, btn }) => {
+const MovieList = ({ movies, addNominee, btn, nominations }) => {
+	let alreadyNominated = movies.filter((movie) =>
+		nominations.some((noms) => movie.imdbID === noms.imdbID)
+	);
+	alreadyNominated.forEach((movieNom) => (movieNom.clicked = true));
+
 	let disable =
 		"h-10 px-1 my-2 text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800";
 	let image = "";
+
 	const movieList = movies.map((movie, index) => {
 		if (movie.clicked || btn === true) {
 			disable =
@@ -12,6 +18,7 @@ const MovieList = ({ movies, addNominee, btn }) => {
 			disable =
 				"h-10 px-1 my-2 text-indigo-100 transition-colors duration-150 bg-indigo-700 rounded-lg focus:shadow-outline hover:bg-indigo-800";
 		}
+
 		if (movie.Poster === "N/A") {
 			image =
 				"https://image.shutterstock.com/image-vector/not-available-grunge-rubber-stamp-260nw-549465907.jpg";

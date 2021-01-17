@@ -51,7 +51,12 @@ function App() {
 
 	const removeNominationHandler = (event, index) => {
 		const nominee = Object.assign([], nomination);
-		nominee[index].clicked = false;
+		let removedMovie = movies.filter(
+			(movie) => movie.imdbID === nominee[index].imdbID
+		);
+
+		removedMovie[0].clicked = false;
+
 		nominee.splice(index, 1);
 		setNomination(nominee);
 	};
@@ -104,6 +109,7 @@ function App() {
 				<MovieList
 					movies={movies}
 					addNominee={addNomineeHandler}
+					nominations={nomination}
 					btn={btnClass}
 				/>
 			</div>
@@ -124,7 +130,11 @@ function App() {
 				/>
 			</div>
 
-			<NominationPopup visibility={visibility} movieTitle={singleMovie} />
+			<NominationPopup
+				visibility={visibility}
+				movieTitle={singleMovie}
+				totalNominations={nomination.length}
+			/>
 		</div>
 	);
 }
