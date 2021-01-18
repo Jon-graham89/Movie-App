@@ -31,7 +31,7 @@ function App() {
 		debounce((val) => {
 			setDebouncedInput(val);
 		}, 500),
-		[] // will be created only once initially
+		[]
 	);
 
 	const handleSearchInput = (val) => {
@@ -61,7 +61,7 @@ function App() {
 	};
 
 	const removeNomination = (nomination) => {
-		// filter out the removed nomination and update our state.
+		// filter out the removed nomination and update the state.
 		setNominations([
 			...nominations.filter((curr) => curr.imdbID !== nomination.imdbID),
 		]);
