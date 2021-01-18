@@ -1,76 +1,78 @@
 import "./App.css";
-import React, { useState, useEffect } from "react";
+
+import React, { useState, useEffect, useCallback } from "react";
 import MovieList from "./component/MovieList";
-import SearchBar from "./component/SearchBar";
 import Nominees from "./component/Nominees";
 import Banner from "./component/Banner";
-import NominationButtons from "./component/NominationButtons";
-import Header from "./component/Header";
 import NominationPopup from "./component/NominationPopup";
+import useSWR from "swr";
+import fetcher from "./lib/fetcher";
+import Navbar from "./component/Navbar";
+import { Box, Main, Heading, Grid, Card, Text } from "grommet";
+import Skeleton from "react-loading-skeleton";
+import debounce from "lodash.debounce";
 
 function App() {
-	let getnoms = [];
-	if (localStorage.length === 0) {
-		localStorage.setItem("nominations", JSON.stringify([]));
-		getnoms = JSON.parse(localStorage.getItem("nominations"));
-	} else {
-		getnoms = JSON.parse(localStorage.getItem("nominations"));
-	}
-
-	const [movies, setMovies] = useState([]);
 	const [searchInput, setSearchInput] = useState("");
-	const [nomination, setNomination] = useState(getnoms);
+	const [debouncedInput, setDebouncedInput] = useState("");
+	const [nominations, setNominations] = useState(
+		JSON.parse(localStorage.getItem("nominations") || JSON.stringify([]))
+	);
 	const [visibility, setVisibility] = useState("invisible");
-	const [singleMovie, setSingleMovie] = useState("");
+	const [currentNomination, setCurrentNomination] = useState(null);
+	const { data: movies, isValidating: loadingMovieData } = useSWR(
+		debouncedInput &&
+			`${process.env.REACT_APP_IMDB_API_URL}/?apikey=${process.env.REACT_APP_IMDB_API_KEY}&s=${debouncedInput}`,
+		fetcher
+	);
 
-	const getMovieData = async (searchInput) => {
-		const url = `https://www.omdbapi.com/?apikey=86a0e89f&s=${searchInput}`;
+	// eslint-disable-next-line
+	const debouncedSave = useCallback(
+		debounce((val) => {
+			setDebouncedInput(val);
+		}, 500),
+		[] // will be created only once initially
+	);
 
-		const response = await fetch(url);
-		const responseJson = await response.json();
-
-		if (responseJson.Search) {
-			setMovies(responseJson.Search);
-		}
+	const handleSearchInput = (val) => {
+		setSearchInput(val);
+		debouncedSave(val);
 	};
 
-	//useEffect for local storage????
-
 	useEffect(() => {
-		getMovieData(searchInput);
-	}, [searchInput]);
+		if (nominations) {
+			localStorage.setItem("nominations", JSON.stringify(nominations));
+		}
+	}, [nominations]);
 
-	const addNomineeHandler = (event, index) => {
-		const nominee = Object.assign([], movies);
-		movies[index].clicked = true;
+	const addNominee = (movieIndex) => {
+		const nominee = movies[movieIndex];
+		movies[movieIndex].clicked = true;
 
-		setNomination([...nomination, nominee[index]]);
-		setSingleMovie(movies[index].Title);
+		if (nominations.length >= 5) {
+			return alert("too many");
+		}
+		if (nominations.find((curr) => curr.imdbID === nominee.imdbID)) {
+			return alert("movie already chosen");
+		}
+		setNominations([...nominations, nominee]);
+		setCurrentNomination(nominee);
 		popup();
 	};
 
-	const removeNominationHandler = (event, index) => {
-		const nominee = Object.assign([], nomination);
-		let removedMovie = movies.filter(
-			(movie) => movie.imdbID === nominee[index].imdbID
-		);
-
-		removedMovie[0].clicked = false;
-
-		nominee.splice(index, 1);
-		setNomination(nominee);
+	const removeNomination = (nomination) => {
+		// filter out the removed nomination and update our state.
+		setNominations([
+			...nominations.filter((curr) => curr.imdbID !== nomination.imdbID),
+		]);
 	};
 
 	const clearNominationHandler = () => {
-		nomination.forEach((nom) => {
+		nominations.forEach((nom) => {
 			nom.clicked = false;
 		});
-		setNomination([]);
+		setNominations([]);
 		localStorage.clear();
-	};
-
-	const saveNominationsHandler = () => {
-		localStorage.setItem("nominations", JSON.stringify(nomination));
 	};
 
 	const popup = () => {
@@ -78,63 +80,96 @@ function App() {
 		setTimeout(() => setVisibility("invisible"), 2000);
 	};
 
-	let banner = "";
-	let btnClass = false;
+	const bannerMarkup = (
+		<Banner nomination={nominations} clearNomination={clearNominationHandler} />
+	);
 
-	if (nomination.length === 5) {
-		btnClass = true;
-		banner = (
-			<Banner
-				nomination={nomination}
-				clearNomination={clearNominationHandler}
-			/>
-		);
-	} else {
-		banner = "";
-		btnClass = false;
-	}
+	const skeletonLayout = loadingMovieData && (
+		<Main pad="medium">
+			<Heading size={"small"} level={"2"}>
+				<Skeleton />
+			</Heading>
+			<Box
+				direction="row-responsive"
+				justify="center"
+				align="center"
+				pad="large"
+				gap="medium"
+			>
+				<Grid
+					columns={{
+						count: 2,
+						size: "auto",
+					}}
+					gap="medium"
+				>
+					<Skeleton width={300} height={500} />
+					<Skeleton width={300} height={500} />
+				</Grid>
+			</Box>
+		</Main>
+	);
+
+	const loadedLayout = !loadingMovieData && movies && (
+		<Main pad="medium">
+			<Box direction={"column"}>
+				<Heading size={"small"} level={"2"}>
+					Search results
+				</Heading>
+				{movies.length === 0 && <Text>No search results found!</Text>}
+			</Box>
+
+			<Box
+				direction="row-responsive"
+				justify="center"
+				align="center"
+				pad="large"
+				gap="medium"
+			>
+				<Grid
+					columns={{
+						count: 2,
+						size: "auto",
+					}}
+					gap="medium"
+				>
+					<Box pad="medium" align="center" round gap="small">
+						<MovieList
+							movies={movies}
+							addNominee={addNominee}
+							nominations={nominations}
+						/>
+					</Box>
+
+					<Card pad="large" wrap height={"large"}>
+						<Box direction={"column"} align={"center"} gap={"medium"}>
+							<Heading level={2} size={"small"}>
+								Movie Nominations
+							</Heading>
+							<Nominees
+								nominations={nominations}
+								removeNominee={removeNomination}
+							/>
+						</Box>
+					</Card>
+				</Grid>
+			</Box>
+		</Main>
+	);
 
 	return (
 		<div>
-			{banner}
-			<Header />
-			<SearchBar searchInput={searchInput} setSearchInput={setSearchInput} />
-
-			<div className="mx-12 mx-36">
-				{movies.length > 0 ? (
-					<p className="text-3xl mx-8 text-white my-12">Movies</p>
-				) : (
-					""
-				)}
-				<MovieList
-					movies={movies}
-					addNominee={addNomineeHandler}
-					nominations={nomination}
-					btn={btnClass}
+			<Navbar searchInput={searchInput} setSearchInput={handleSearchInput} />
+			{nominations.length === 5 && bannerMarkup}
+			{loadedLayout}
+			{skeletonLayout}
+			{currentNomination && (
+				<NominationPopup
+					nomination={currentNomination}
+					visibility={visibility}
+					totalNominations={nominations.length}
 				/>
-			</div>
-
-			<div className="my-12 mx-36">
-				{nomination.length > 0 ? (
-					<NominationButtons
-						saveNominations={saveNominationsHandler}
-						clearNominations={clearNominationHandler}
-					/>
-				) : (
-					""
-				)}
-
-				<Nominees
-					nominations={nomination}
-					removeNominee={removeNominationHandler}
-				/>
-			</div>
-
-			<NominationPopup
-				visibility={visibility}
-				movieTitle={singleMovie}
-				totalNominations={nomination.length}
-			/>
+			)}
 		</div>
 	);
 }

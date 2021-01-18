@@ -10,6 +10,7 @@ const Banner = (props) => {
 		<div
 			className="overflow-hidden leading-normal w-screen fixed "
 			role="alert"
+			style={{zIndex: 5000}}
 		>
 			<p className="px-4 py-3 font-bold text-purple-100 bg-purple-800 text-2xl">
 				Confirm your Nominations

@@ -1,12 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
+import 'hover.css/css/hover-min.css'
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { Grommet } from 'grommet';
+import { grommet } from 'grommet/themes';
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <Grommet theme={grommet}>
+      <App />
+    </Grommet>
   </React.StrictMode>,
   document.getElementById('root')
 );
